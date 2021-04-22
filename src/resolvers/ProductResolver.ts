@@ -50,11 +50,13 @@ export class ProductResolver {
 
   @Query(() => [Product])
   getProducts() {
-    return Product.find();
+    return Product.find({ relations: ["brand"] });
   }
 
-  @Query(() => String)
-  ping() {
-    return "Pong!";
+  @Query(() => Product)
+  async getProduct(@Arg("id", () => Int) id: number) {
+    return await Product.findOne(id, {
+      relations: ["brand"],
+    });
   }
 }
